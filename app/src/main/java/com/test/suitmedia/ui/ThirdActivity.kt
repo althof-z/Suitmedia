@@ -1,15 +1,16 @@
 package com.test.suitmedia.ui
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.test.suitmedia.data.model.User
+import com.test.suitmedia.R
 import com.test.suitmedia.databinding.ActivityThirdBinding
+import com.test.suitmedia.data.model.User
 import com.test.suitmedia.ui.adapter.UserAdapter
 import com.test.suitmedia.ui.adapter.UserAdapterListener
 
@@ -17,10 +18,6 @@ class ThirdActivity : AppCompatActivity(), UserAdapterListener {
 
     companion object {
         const val RESULT_KEY_USER = "RESULT_KEY_USER"
-
-        fun startActivity(context: Context) {
-            context.startActivity(Intent(context, ThirdActivity::class.java))
-        }
     }
 
     private val viewModel by viewModels<ThirdActivityViewModel> {
@@ -28,7 +25,6 @@ class ThirdActivity : AppCompatActivity(), UserAdapterListener {
     }
 
     private val userAdapter = UserAdapter(this)
-
     private val binding: ActivityThirdBinding by lazy {
         ActivityThirdBinding.inflate(layoutInflater)
     }
@@ -37,19 +33,25 @@ class ThirdActivity : AppCompatActivity(), UserAdapterListener {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        setupTitleAndNavigation()
+        setupRecyclerView()
+
         viewModel.error.observe(this) { error ->
             Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show()
         }
-        setupUserRV()
 
         viewModel.retrieveUsers()
-
         viewModel.users.observe(this) { users ->
             userAdapter.submitList(users)
         }
     }
 
-    private fun setupUserRV() {
+    private fun setupTitleAndNavigation() {
+        val buttonNavigateUp = findViewById<ImageView>(R.id.imgBackArrow)
+        buttonNavigateUp.setOnClickListener{finish()}
+    }
+
+    private fun setupRecyclerView() {
         binding.rvUser.apply {
             adapter = userAdapter
             layoutManager = LinearLayoutManager(context)
@@ -58,10 +60,9 @@ class ThirdActivity : AppCompatActivity(), UserAdapterListener {
     }
 
     override fun onClickUser(data: User) {
-        val intent = Intent().apply {
+        setResult(RESULT_OK, Intent().apply {
             putExtra(RESULT_KEY_USER, data)
-        }
-        setResult(RESULT_OK, intent)
-        finish() // Closes com.test.suitmedia.ui.ThirdActivity and returns to SecondActivity
+        })
+        finish()
     }
 }

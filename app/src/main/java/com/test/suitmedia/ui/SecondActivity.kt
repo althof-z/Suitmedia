@@ -2,11 +2,11 @@ package com.test.suitmedia.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
-import androidx.activity.result.ActivityResult
+import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.test.suitmedia.R
 import com.test.suitmedia.databinding.ActivitySecondBinding
 import com.test.suitmedia.data.model.User
 
@@ -17,14 +17,11 @@ class SecondActivity : AppCompatActivity() {
     }
 
     private val resultLauncher: ActivityResultLauncher<Intent> =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                val data = result.data
-                val user: User? = data?.getParcelableExtra(ThirdActivity.RESULT_KEY_USER)
-                if (user != null) {
-                    // Handle the received user data
-                    binding.tvSelectedUsername.text = "${user.firstName} ${user.lastName}"
-                    Toast.makeText(this, "Received user: ${user.firstName}", Toast.LENGTH_SHORT).show()
+                val user: User? = result.data?.getParcelableExtra(ThirdActivity.RESULT_KEY_USER)
+                user?.let {
+                    binding.tvSelectedUsername.text = "${it.firstName} ${it.lastName}"
                 }
             }
         }
@@ -33,12 +30,17 @@ class SecondActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val name = intent.getStringExtra("EXTRA_NAME")
-        binding.tvLoginUsername.text = name
+        setupTitleAndNavigation()
+        binding.tvLoginUsername.text = intent.getStringExtra("EXTRA_NAME")
 
         binding.btnChooseUser.setOnClickListener {
             openThirdActivity()
         }
+    }
+
+    fun setupTitleAndNavigation() {
+        val buttonNavigateUp = findViewById<ImageView>(R.id.imgBackArrow)
+        buttonNavigateUp.setOnClickListener{finish()}
     }
 
     private fun openThirdActivity() {
