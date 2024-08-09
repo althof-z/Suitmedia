@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SecondActivity"
+    tools:context=".ui.SecondActivity"
     android:background="@color/white">
 
     <TextView
@@ -41,7 +41,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btnNext"
+        android:id="@+id/btnChooseUser"
         style="@style/ButtonStyle"
         android:text="Choose a User"
         android:layout_marginStart="32dp"
