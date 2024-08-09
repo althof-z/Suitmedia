@@ -36,13 +36,18 @@ class ThirdActivityViewModel(
     private val _users = MutableLiveData<List<User>>()
     val users: LiveData<List<User>> get() = _users
 
+    private val _loading: MutableLiveData<Boolean> = MutableLiveData()
+    val loading: LiveData<Boolean> = _loading
+
     private val _error = MutableLiveData<Throwable>()
     val error: LiveData<Throwable> get() = _error
 
     fun retrieveUsers() {
         viewModelScope.launch {
             try {
+                _loading.value = true
                 _users.value = reqresRepository.fetchData()
+                _loading.value = false
             } catch (exception: Exception) {
                 _error.value = exception
             }

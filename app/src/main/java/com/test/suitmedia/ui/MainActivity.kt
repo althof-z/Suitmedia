@@ -2,8 +2,10 @@ package com.test.suitmedia.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import com.test.suitmedia.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -15,6 +17,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(activityMainBinding.root)
+
+        setStatusBar()
 
         activityMainBinding.btnNext.setOnClickListener {
             handleNextButtonClick()
@@ -54,5 +58,13 @@ class MainActivity : AppCompatActivity() {
     private fun isPalindrome(input: String): Boolean {
         val cleanedInput = input.replace("\\s+".toRegex(), "").lowercase()
         return cleanedInput == cleanedInput.reversed()
+    }
+
+    fun setStatusBar(){
+        WindowCompat.setDecorFitsSystemWindows(
+            window,
+            false
+        )
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
     }
 }

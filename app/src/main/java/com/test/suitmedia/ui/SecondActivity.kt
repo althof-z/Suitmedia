@@ -2,10 +2,12 @@ package com.test.suitmedia.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import com.test.suitmedia.R
 import com.test.suitmedia.databinding.ActivitySecondBinding
 import com.test.suitmedia.data.model.User
@@ -30,6 +32,7 @@ class SecondActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        setStatusBar()
         setupTitleAndNavigation()
         binding.tvLoginUsername.text = intent.getStringExtra("EXTRA_NAME")
 
@@ -46,5 +49,13 @@ class SecondActivity : AppCompatActivity() {
     private fun openThirdActivity() {
         val intent = Intent(this, ThirdActivity::class.java)
         resultLauncher.launch(intent)
+    }
+
+    fun setStatusBar(){
+        WindowCompat.setDecorFitsSystemWindows(
+            window,
+            false
+        )
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
     }
 }
