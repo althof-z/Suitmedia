@@ -10,15 +10,12 @@ class UserViewHolder(
     private val binding: ItemUserBinding, private val userAdapterListener: UserAdapterListener
 ): RecyclerView.ViewHolder(binding.root) {
 
-    fun bindUser(data: User){
+    fun bindUser(data: User) {
         binding.tvFName.text = data.firstName
-
         binding.tvLName.text = data.lastName
-
         binding.tvEmail.text = data.email
-
-        binding.ivUser.load(data.avatar)
-
-        binding.root.setOnClickListener{ userAdapterListener.onClickUser(data)}
+        binding.ivUser.load(data.avatar) // Using Coil for image loading
+        binding.root.setOnClickListener { userAdapterListener.onClickUser(data) }
     }
+
 }

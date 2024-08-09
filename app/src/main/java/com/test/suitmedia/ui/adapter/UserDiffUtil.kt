@@ -5,9 +5,12 @@ import com.test.suitmedia.data.model.User
 
 class UserDiffUtil : DiffUtil.ItemCallback<User>() {
     override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
-        return oldItem.firstName == newItem.firstName
+        // Assuming each user has a unique email, or you can add an ID property in the User model.
+        return oldItem.email == newItem.email
     }
+
     override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
-        return oldItem.firstName == newItem.firstName
+        // Compare all properties to ensure correct diffing.
+        return oldItem == newItem
     }
 }
